@@ -22,6 +22,9 @@
       "@config/*": ["./config/*"],
       "@models/*": ["./models/*"],
       "@components/*": ["./app/components/*"],
+      "@contexts/*": ["./app/contexts/*"],
+      "@interfaces/*": ["./app/interfaces/*"],
+      "@utils/*": ["./app/utils/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
