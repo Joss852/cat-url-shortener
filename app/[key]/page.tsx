@@ -8,7 +8,7 @@ function Page() {
     const key = window.location.pathname.split('/')[1]
     fetchShortenedLink(key).then(data => {
       if (!data) return
-      // window.location.href = data.link
+      window.location.href = data.link
     })
   }, [])
 
