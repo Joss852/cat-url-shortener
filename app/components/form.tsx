@@ -10,7 +10,7 @@ import { saveToSessionStorage } from '@utils/localStorage'
 import { createShortLink } from '@services/shortener'
 
 export default function Form() {
-  const { shortLinkIds, setShortLinkIds } = useContext(ShortLinksContext)
+  const { shortLinkIds, setShortLinkIds } = useContext<any>(ShortLinksContext)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {

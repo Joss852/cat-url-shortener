@@ -6,15 +6,15 @@ import { fetchShortenedLinks } from '@services/shortener'
 import ShortenedLinks from './shortened-links'
 
 export default function History() {
-  const { shortLinkIds } = useContext(ShortLinksContext)
+  const { shortLinkIds } = useContext<any>(ShortLinksContext)
   const [links, setLinks] = useState<Link[]>([])
 
   useEffect(() => {
     if (shortLinkIds.length === 0) return
-    fetchShortenedLinks(shortLinkIds).then(data => {
+    fetchShortenedLinks(shortLinkIds).then((data: any) => {
       return setLinks(data)
     })
-  }, [shortLinkIds]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [shortLinkIds])
 
   return (
     <section className='mt-8 w-full max-w-md'>
