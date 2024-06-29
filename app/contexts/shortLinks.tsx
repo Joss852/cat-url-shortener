@@ -1,19 +1,20 @@
 'use client'
-import { Link } from '@interfaces/short-link'
 import { createContext, useState } from 'react'
+import { retrieveFromSessionStorage } from '@utils/localStorage'
 
-type ShortLinksContextType = {
-  shortLinks: Link[];
-  setShortLinks: React.Dispatch<React.SetStateAction<Link[]>>;
-};
+interface ShortLinksContextType {
+  shortLinkIds: string[]
+  setShortLinkIds: React.Dispatch<React.SetStateAction<string[]>>
+}
 
 export const ShortLinksContext = createContext<ShortLinksContextType | undefined>(undefined)
 
 export default function ShortUrlProvider({ children }: { children: React.ReactNode }) {
-  const [shortLinks, setShortLinks] = useState<Link[]>([])
+  const initialShortLinkIds = retrieveFromSessionStorage()
+  const [shortLinkIds, setShortLinkIds] = useState<string[]>(initialShortLinkIds)
 
   return (
-    <ShortLinksContext.Provider value={{shortLinks, setShortLinks}}>
+    <ShortLinksContext.Provider value={{ shortLinkIds, setShortLinkIds }}>
       {children}
     </ShortLinksContext.Provider>
   )

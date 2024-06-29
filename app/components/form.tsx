@@ -5,39 +5,29 @@ import Label from '@components/label'
 import Input from '@components/input'
 import Button from '@components/button'
 import { ShortLinksContext } from '@contexts/shortLinks'
-import type { GlobalResponse } from '@interfaces/http-request'
 import { toast } from 'sonner'
-import { saveToLocalStorage } from '@utils/localStorage'
+import { saveToSessionStorage } from '@utils/localStorage'
+import { createShortLink } from '@services/shortener'
 
 export default function Form() {
-  const { shortLinks, setShortLinks } = useContext(ShortLinksContext)
+  const { shortLinkIds, setShortLinkIds } = useContext(ShortLinksContext)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    const res: Response = await fetch('/api/shortener', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: inputRef.current?.value,
-      }),
-    })
-
-    if (!res.ok) {
-      console.error('Failed to shorten URL')
-      toast.error('An error occurred. Please try again. 😿')
+    if (!inputRef.current?.value) {
+      toast.error('Please enter a URL. 😿')
       return
     }
 
-    const { data }: GlobalResponse = await res.json()
-
-    setShortLinks(shortLinks.concat(data))
-    toast.success('URL shortened successfully. 😽🎉')
-    inputRef.current!.value = ''
-    saveToLocalStorage(shortLinks.concat(data))
+    createShortLink(inputRef.current.value).then(data => {
+      if (!data) return
+      
+      setShortLinkIds(shortLinkIds.concat(data.id))
+      saveToSessionStorage(shortLinkIds.concat(data.id))
+      toast.success('URL shortened successfully. 😽🎉')
+      inputRef.current!.value = ''
+    })
   }
 
   return (

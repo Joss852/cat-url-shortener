@@ -7,8 +7,9 @@ import ShortUrlProvider from '@contexts/shortLinks'
 import { Toaster } from 'sonner'
 
 export default function Home() {
-  try {
-    let previousTitle = 'Catly | Cat lovers url shortener 🐱'
+  let previousTitle = 'Catly | Cat lovers url shortener 🐱'
+
+  if (typeof window !== 'undefined') {
     window.addEventListener('blur', () => {
       previousTitle = previousTitle
       document.title = 'Come back 😿'
@@ -17,8 +18,6 @@ export default function Home() {
     window.addEventListener('focus', () => {
       document.title = previousTitle
     })
-  } catch (error: any) {
-    console.error('Failed to set title.', error.message)
   }
 
   return (

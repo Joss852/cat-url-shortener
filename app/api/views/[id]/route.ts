@@ -2,23 +2,22 @@ import LinkModel from '@models/links'
 import ConnectDB from '@config/database'
 import mongoose from 'mongoose'
 
-export async function GET(req: Request, { params }: { params: { key: string } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     await ConnectDB()
-    const updatedLink = await LinkModel.findOneAndUpdate(
-      { key: params.key },
-      { $inc: { clicks: 1 } }
-    ).then(data => {
+    const link = await LinkModel.findById(params.id).then(data => {
       mongoose.disconnect()
       return data
     })
+
+    const { clicks } = link
 
     return new Response(
       JSON.stringify({
         status: 'success',
         ok: true,
         code: 200,
-        data: updatedLink,
+        data: { clicks },
       }),
       {
         headers: {
